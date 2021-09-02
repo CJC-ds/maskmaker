@@ -7,5 +7,7 @@ masks for a project.
 
 ## Future work
 
-Add methods to manipulate generated or existing masks
+* Add methods to manipulate generated or existing masks
 through geometric translation, rotation and resizing of polygons.
+
+* Method to save the image mask to disk.
