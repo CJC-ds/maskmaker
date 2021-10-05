@@ -1,8 +1,8 @@
 import numpy as np
 from matplotlib.patches import Polygon
+from matplotlib.collections import PatchCollection
 import matplotlib.pyplot as plt
 from PIL import Image, ImageDraw
-
 
 class MaskMaker:
     """
@@ -37,18 +37,13 @@ class MaskMaker:
     `combinedMask` (numpy.darray):
     A single mask that is the combination of all the polygons.
     """
-
     def __init__(self, nRegions, xyTranslations,
-                 polyEdges, imageSize, randSeed, rescaler=10):
+               polyEdges, imageSize, randSeed, rescaler=10):
         """
         MaskMaker constructor
 
-        Paramters:
+        Parameters:
         ----------
-        `seed` (int):
-          The random number generator seed for reproducibility.
-        `rng` (np.random.RandomState):
-          An object used for handling the randomness in the class object.
         `nRegions` (int):
           Number of polygon regions.
         `xyTranslations` (list, tuple):
@@ -82,12 +77,11 @@ class MaskMaker:
         Creates the polygons using matplotlib Polygons.
         """
         if isinstance(self.polyEdges, list):
-            p = [Polygon(self.rng.rand(edge, 2), True)
-                 for i, edge in zip(range(self.nRegions),
-                 self.polyEdges)]
+            p = [Polygon(self.rng.rand(edge, 2), True) 
+            for i, edge in zip(range(self.nRegions), self.polyEdges)]
         else:
-            p = [Polygon(self.rng.rand(self.polyEdges, 2), True)
-                 for i in range(self.nRegions)]
+            p = [Polygon(self.rng.rand(self.polyEdges, 2), True) 
+            for i in range(self.nRegions)]
         return p
 
     def getVertices(self):
@@ -96,7 +90,7 @@ class MaskMaker:
         """
         vs = [p.get_path().vertices for p in self.polygons]
         ts = [p.get_patch_transform() for p in self.polygons]
-        ppoints = [t.transform(v) for v, t in zip(vs, ts)]
+        ppoints = [t.transform(v) for v, t in zip(vs,ts)]
         return ppoints
 
     def rescaleVertices(self, rescaler=10):
@@ -104,23 +98,23 @@ class MaskMaker:
         Rescales the size of the polygon
         """
         return [[[np.round(point*rescaler) for point in points]
-                for points in pv]
-                for pv in self.pVertices]
+                for points in pv] 
+                 for pv in self.pVertices]
 
     def translateVertices(self):
         """
         Shifts the polygon in the x,y direction given `self.xyTranslations`
         """
         if isinstance(self.xyTranslations, list):
-            tv = [[(np.round(x+xt), np.round(y+yt))
-                  for (x, y) in pv]
-                  for pv, (xt, yt) in zip(self.rescaledVertices,
-                  self.xyTranslations)]
+            tv = [[(np.round(x+xt), np.round(y+yt))  
+                  for (x,y) in pv]
+                   for pv, (xt,yt) 
+                  in zip(self.rescaledVertices,self.xyTranslations)]
         else:
             tv = [[(np.round(x+self.xyTranslations[0]),
                   np.round(y+self.xyTranslations[1]))
-                  for x, y in pv]
-                  for pv in self.rescaledVertices]
+                    for x,y in pv]
+                    for pv in self.rescaledVertices]
         return tv
 
     def generateMasks(self):
@@ -143,7 +137,7 @@ class MaskMaker:
         """
         cmask = np.logical_or.reduce(self.masks)
         return cmask
-
+    
     def viewMask(self, maskNumber=None, plotComponents=False):
         """
         Method to display the polygon masks generated.
@@ -164,7 +158,7 @@ class MaskMaker:
         --------
         `matplotlib.figure.Figure`, `matplotlib.axes._subplots.AxesSubplot`
         """
-        fig, ax = plt.subplots(figsize=(8, 8))
+        fig, ax = plt.subplots(figsize=(8,8))
         if maskNumber is None:
             plt.imshow(self.combinedMask)
         else:
