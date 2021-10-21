@@ -18,11 +18,11 @@ def main(args):
         rescaler=args.rescaler
     )
 
-    mm.saveMask(file_name=args.mask_directory)
+    mm.saveMask(file_name=args.saveAs)
 
 if __name__=="__main__":
-    np.random.seed(420)
     parser = argparse.ArgumentParser(description='MaskMaker')
+
     parser.add_argument('--regions', type=int, default=15,
                          help='Number of regions')
     random_positions = [(np.random.randint(256), np.random.randint(256))
@@ -35,10 +35,9 @@ if __name__=="__main__":
     parser.add_argument('--dimensions', type=tuple, default=(256,256))
     parser.add_argument('--seed', type=int, default=420)
     parser.add_argument('--rescaler', type=int, default=21)
-    parser.add_argument('--mask_directory', type=str, default='mask.png')
-    
-    args = parser.parse_args()
-    main(args)
+    parser.add_argument('--saveAs', type=str, default='mask.png')
+    args1 = parser.parse_args()
+    main(args1)
 
     
     
