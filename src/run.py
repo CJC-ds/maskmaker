@@ -18,7 +18,7 @@ def main(args):
         rescaler=args.rescaler
     )
 
-    mm.saveMask()
+    mm.saveMask(file_name=args.mask_directory)
 
 if __name__=="__main__":
     np.random.seed(420)
