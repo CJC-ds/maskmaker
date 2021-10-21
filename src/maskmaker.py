@@ -1,3 +1,4 @@
+from types import prepare_class
 import numpy as np
 from matplotlib.patches import Polygon
 from matplotlib.collections import PatchCollection
@@ -167,3 +168,25 @@ class MaskMaker:
         plt.show()
         if plotComponents:
             return fig, ax
+
+    def saveMask(self, file_name='mask.png',
+                  maskNumber=None):
+      """
+      Method to save the mask to disk.
+      """
+      fig, ax = plt.subplots(figsize=(25,25), frameon=False)
+      ax.set_axis_off()
+      if maskNumber is None:
+        ax.imshow(self.combinedMask,
+                  aspect='auto')
+        file_name = file_name
+      else:
+        plt.imshow(self.masks[maskNumber],
+                   aspect='auto')
+        file_name = f"{str(maskNumber)}_{file_name}"
+      fig.savefig(file_name,
+                    bbox_inches='tight',
+                    pad_inches=0,
+                    dpi=24)
+      plt.close('all')
+      
